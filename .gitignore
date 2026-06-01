@@ -1,0 +1,7 @@
+.venv/
+*.png
+!assets/preview.png
+*.csv
+*.json
+*_logs/
+__pycache__/
