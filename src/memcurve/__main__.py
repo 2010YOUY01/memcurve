@@ -22,6 +22,7 @@ from matplotlib import pyplot as plt  # noqa: E402
 
 
 BYTES_PER_MIB = 1024 * 1024
+DEFAULT_FIGURE_TITLE = "CLI memory usage comparison"
 AREA_COLORS = (
     "#00a6d6",
     "#e11d48",
@@ -72,6 +73,11 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
         "--output",
         default="memcurve.png",
         help="PNG output path for the overlapped plot. Default: %(default)s",
+    )
+    parser.add_argument(
+        "--title",
+        default=DEFAULT_FIGURE_TITLE,
+        help="Figure title. Default: %(default)s",
     )
     parser.add_argument(
         "--csv",
@@ -277,7 +283,7 @@ def run_command(
     )
 
 
-def plot_results(results: list[RunResult], output_path: Path) -> None:
+def plot_results(results: list[RunResult], output_path: Path, title: str) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     fig, ax = plt.subplots(figsize=(11, 6.5), dpi=150)
@@ -316,7 +322,7 @@ def plot_results(results: list[RunResult], output_path: Path) -> None:
             alpha=0.95,
         )
 
-    ax.set_title("CLI memory usage comparison", fontsize=15, fontweight="semibold", pad=14)
+    ax.set_title(title, fontsize=15, fontweight="semibold", pad=14)
     ax.set_xlabel("Elapsed time (seconds)", labelpad=9)
     ax.set_ylabel("Process tree RSS (MiB)", labelpad=9)
     ax.grid(True, which="major", color="#d4d7dd", linestyle="-", linewidth=0.7, alpha=0.65)
@@ -410,7 +416,7 @@ def main(argv: list[str] | None = None) -> int:
             )
         )
 
-    plot_results(results, output_path)
+    plot_results(results, output_path, args.title)
     write_csv(results, csv_path)
     write_summary(results, summary_path)
 

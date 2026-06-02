@@ -26,6 +26,7 @@ memcurve --help
 ```bash
 uv run memcurve \
   --output memcurve.png \
+  --title "Python allocation comparison" \
   --open \
   --label small \
   --cmd "python3 -c 'import time; x=bytearray(35*1024*1024); time.sleep(0.8)'" \
@@ -36,6 +37,8 @@ uv run memcurve \
 By default command stdout is discarded, which keeps benchmark output from overwhelming the terminal. Use `--stdout inherit` to print program output, or `--stdout log` to write it under `<output-stem>_logs/`.
 
 The sampling interval is configurable with `--interval <seconds>`. The default is `0.01`, meaning one sample every 10 ms.
+
+The figure title is configurable with `--title "..."`.
 
 The run also writes:
 
